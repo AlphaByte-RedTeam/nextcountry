@@ -4,7 +4,6 @@ import NextSupabase from "@/app/supabase/setup"
 interface Props {
   offset: number
   limit: number
-  basePath: string
 }
 
 const MAX_OFFSET_LIMIT = 241
@@ -20,15 +19,14 @@ function isValidOffsetAndLimit({ offset, limit }: Props) {
   )
 }
 
-function generateURLWithOffsetAndLimit({ offset, limit, basePath }: Props) {
-  return `${basePath}/api/v1/countries?offset=${offset}&limit=${limit}`
+function generateURLWithOffsetAndLimit({ offset, limit }: Props) {
+  return `/api/v1/countries?offset=${offset}&limit=${limit}`
 }
 
 export async function GET(request: NextRequest) {
   try {
     const totalCountry = MAX_OFFSET_LIMIT
     const { searchParams } = new URL(request.url)
-    const { basePath } = new URL(request.url)
 
     console.log(searchParams)
 
@@ -44,14 +42,13 @@ export async function GET(request: NextRequest) {
     const isValidRequest = isValidOffsetAndLimit({ offset, limit })
     const next =
       isValidRequest && nextOffset <= MAX_OFFSET_LIMIT
-        ? generateURLWithOffsetAndLimit({ offset: nextOffset, limit, basePath })
+        ? generateURLWithOffsetAndLimit({ offset: nextOffset, limit })
         : null
     const previous =
       isValidRequest && offset >= limit
         ? generateURLWithOffsetAndLimit({
             offset: previousOffset,
             limit,
-            basePath,
           })
         : null
 
