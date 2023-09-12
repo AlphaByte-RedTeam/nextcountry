@@ -10,7 +10,7 @@ const MAX_OFFSET_LIMIT = 241
 
 function isValidOffsetAndLimit({ offset, limit }: Props) {
   return (
-    typeof offset === "number" &&g
+    typeof offset === "number" &&
     typeof limit === "number" &&
     offset >= 0 &&
     limit >= 0 &&
